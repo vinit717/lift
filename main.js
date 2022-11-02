@@ -1,14 +1,17 @@
-const floorValue = document.querySelector("#floor-input");
-const liftValue = document.querySelector("#lift-input");
-const confirmbtn = document.querySelector(".confirm-btn");
-const floorContainer = document.querySelector(".floors-container");
-const liftSection = document.querySelector(".floor");
+document.addEventListener("DOMContentLoaded ", () => {
+  const floorValue = document.querySelector("#floor-input");
+  const liftValue = document.querySelector("#lift-input");
+  const confirmbtn = document.querySelector(".confirm-btn");
+  const floorContainer = document.querySelector(".floors-container");
+  const liftSection = document.querySelector(".floor");
+  confirmbtn.addEventListener("click", (e) => generateBtn(e));
+});
 
 // const section = document.querySelector(".container");
 
 //check the input
 
-confirmbtn.addEventListener("click", (e) => {
+function generateBtn(e) {
   e.preventDefault();
   let totalfloors;
   let totallifts;
@@ -31,10 +34,11 @@ confirmbtn.addEventListener("click", (e) => {
   } else {
     alert("please enter lifts");
   }
+}
 
-  // section.classList.add("floor");
-  // const createSection = document.createElement("section");
-
+// section.classList.add("floor");
+// const createSection = document.createElement("section");
+function floorMaking() {
   for (let i = 0; i < totalfloors; i++) {
     var rowfloor = document.createElement("section");
     rowfloor.setAttribute("class", "floor");
@@ -50,7 +54,8 @@ confirmbtn.addEventListener("click", (e) => {
     rowfloor.innerHTML = floors;
     floorContainer.append(rowfloor);
   }
-
+}
+function liftMaking() {
   for (let i = 0; i < totallifts; i++) {
     var liftSection = document.createElement("div");
     liftSection.setAttribute("class", "lift");
@@ -62,7 +67,9 @@ confirmbtn.addEventListener("click", (e) => {
     const groundFloor = document.querySelector(".floor-no-0");
     groundFloor.append(liftSection);
   }
+}
 
+function liftMovement() {
   const mainArea = document.querySelector(".floors-container");
   let height = mainArea.offsetHeight;
   console.log(height);
@@ -72,9 +79,6 @@ confirmbtn.addEventListener("click", (e) => {
   const spacing = parseInt(
     getComputedStyle(randomFloor).marginTop.slice(0, -2)
   );
-  //+ getComputedStyle(randomFloor).marginBottom.slice(0, -2) +
-  // getComputedStyle(randomFloor).paddingTop.slice(0, -2) +
-  // getComputedStyle(randomFloor).paddingBottom.slice(0, -2);
 
   console.log(spacing);
 
@@ -88,11 +92,12 @@ confirmbtn.addEventListener("click", (e) => {
       const liftMove = document.querySelector(".lift");
       liftMove.style.transform = `translateY(-${floorHeight * floorId}px)`;
       liftMove.style.transition = `all  ${floorId * 2}s ease-in-out`;
-
-      let liftLeftmove = document.querySelector(".left-door");
-      liftLeftmove.classList.add("left-move");
-      let liftRightmove = document.querySelector(".right-door");
-      liftRightmove.classList.add("right-move");
     });
   });
-});
+}
+function doorMovement() {
+  let liftLeftmove = document.querySelector(".left-door");
+  liftLeftmove.classList.add("left-move");
+  let liftRightmove = document.querySelector(".right-door");
+  liftRightmove.classList.add("right-move");
+}
