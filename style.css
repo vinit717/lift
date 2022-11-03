@@ -90,6 +90,17 @@ header {
 .call-btn {
   padding: 1.2rem;
   margin: 1.2rem 2rem 1rem 0rem;
+  background-color: aqua;
+  border-radius: 1rem;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: rgb(69, 68, 68);
+  box-shadow: 0 2rem 5rem rgba(black, 0.5);
+}
+.call-btn:hover {
+  cursor: pointer;
+  transform: translateY(-2px);
+  box-shadow: 0 2rem 5rem rgba(black, 0.5);
 }
 /* .floor-no {
   flex-direction: column;
@@ -98,6 +109,9 @@ header {
 } */
 .floor-common {
   display: flex;
+}
+.hidden {
+  display: none;
 }
 .lift {
   height: 11rem;
@@ -108,6 +122,9 @@ header {
   justify-content: center;
   z-index: 1;
   overflow: hidden;
+  /* outline: 2px solid rgb(13, 13, 71);
+  outline-offset: 1rem; */
+  border-radius: 0.5rem;
 }
 /* .lift:hover {
   transform: translateY(-20rem);
@@ -116,18 +133,30 @@ header {
 .left-door {
   height: 100%;
   width: 50%;
-  background-color: rgb(109, 96, 96);
+  background-color: rgb(101, 103, 100);
 }
 .right-door {
   height: 100%;
   width: 50%;
-  background-color: rgb(72, 72, 118);
+  background-color: rgb(66, 70, 66);
 }
-.left-move {
-  transform: translateX(-100%);
+.left-move-open {
+  transform: translate(-100%);
   transition-duration: 2.5s;
+  transition-timing-function: ease-in;
 }
-.right-move {
-  transform: translateX(100%);
+.right-move-open {
+  transform: translate(100%);
   transition-duration: 2.5s;
+  transition-timing-function: ease-in;
+}
+.left-move-close {
+  transform: translate(0%);
+  transition-duration: 2.5s;
+  transition-timing-function: ease-in;
+}
+.right-move-close {
+  transform: translate(0%);
+  transition-duration: 2.5s;
+  transition-timing-function: ease-in;
 }

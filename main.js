@@ -1,20 +1,30 @@
-document.addEventListener("DOMContentLoaded ", () => {
-  const floorValue = document.querySelector("#floor-input");
-  const liftValue = document.querySelector("#lift-input");
+let totalfloors;
+let totallifts;
+let liftArray = [];
+document.addEventListener("DOMContentLoaded", () => {
+  // console.log("first");
   const confirmbtn = document.querySelector(".confirm-btn");
-  const floorContainer = document.querySelector(".floors-container");
-  const liftSection = document.querySelector(".floor");
-  confirmbtn.addEventListener("click", (e) => generateBtn(e));
+
+  // const form = document.querySelector(".input-values");
+  // form.addEventListener("submit", (e) => {
+  //   e.preventDefault();
+
+  //   console.log("subtk");
+  // });
+  confirmbtn.addEventListener("click", (e) => {
+    console.log("inserted btn");
+    generateBtn();
+  });
 });
 
 // const section = document.querySelector(".container");
 
 //check the input
 
-function generateBtn(e) {
-  e.preventDefault();
-  let totalfloors;
-  let totallifts;
+function generateBtn() {
+  // e.preventDefault();
+  const floorValue = document.querySelector("#floor-input");
+  const liftValue = document.querySelector("#lift-input");
   if (floorValue.value > 16) {
     alert("only 15 floors is availabe!!");
   }
@@ -34,11 +44,20 @@ function generateBtn(e) {
   } else {
     alert("please enter lifts");
   }
+  floorMaking();
+  liftMaking();
+  liftMovement();
+  let inputCheck = document.querySelector(".input-values");
+  if (floorValue.value && liftValue.value) {
+    inputCheck.classList.add("hidden");
+  }
 }
 
 // section.classList.add("floor");
 // const createSection = document.createElement("section");
 function floorMaking() {
+  const floorContainer = document.querySelector(".floors-container");
+  console.log(totalfloors);
   for (let i = 0; i < totalfloors; i++) {
     var rowfloor = document.createElement("section");
     rowfloor.setAttribute("class", "floor");
@@ -47,7 +66,7 @@ function floorMaking() {
     const floors = ` <div class="floor-no-${i} floor-common">
     <div class="btn-floor ">
     <h1>Floor-${i}</h1>
-    <button class="call-btn" id="${i}">call</button>
+    <button class="call-btn" id="${i}">Call</button>
     </div>
 </div>
     `;
@@ -56,17 +75,22 @@ function floorMaking() {
   }
 }
 function liftMaking() {
+  let liftContainer = document.querySelector(".floor");
   for (let i = 0; i < totallifts; i++) {
     var liftSection = document.createElement("div");
     liftSection.setAttribute("class", "lift");
-    rowfloor.append(liftSection);
+    liftContainer.append(liftSection);
     const lifts = `<div class="left-door "></div>
     <div class="right-door "></div>
     `;
+    liftSection.id = `lift-${i}`;
+    liftArray.push(liftSection);
+
     liftSection.innerHTML = lifts;
     const groundFloor = document.querySelector(".floor-no-0");
     groundFloor.append(liftSection);
   }
+  console.log(liftArray);
 }
 
 function liftMovement() {
@@ -80,8 +104,6 @@ function liftMovement() {
     getComputedStyle(randomFloor).marginTop.slice(0, -2)
   );
 
-  console.log(spacing);
-
   const liftBtn = document.querySelectorAll(".call-btn");
   liftBtn.forEach((button) => {
     button.addEventListener("click", (e) => {
@@ -91,13 +113,29 @@ function liftMovement() {
 
       const liftMove = document.querySelector(".lift");
       liftMove.style.transform = `translateY(-${floorHeight * floorId}px)`;
-      liftMove.style.transition = `all  ${floorId * 2}s ease-in-out`;
+      liftMove.style.transition = `all  ${floorId + 1 * 2}s ease-in-out`;
+      liftMove.addEventListener("transitionend", () => doorMovement(floorId), {
+        once: true,
+      });
+      liftMove.classList.add("busy");
     });
   });
 }
-function doorMovement() {
+
+function doorMovement(floorId) {
   let liftLeftmove = document.querySelector(".left-door");
-  liftLeftmove.classList.add("left-move");
   let liftRightmove = document.querySelector(".right-door");
-  liftRightmove.classList.add("right-move");
+
+  liftLeftmove.classList.add("left-move-open");
+  liftRightmove.classList.add("right-move-open");
+  setTimeout(() => {
+    liftLeftmove.classList.add("left-move-close");
+    liftRightmove.classList.add("right-move-close");
+    liftLeftmove.classList.remove("left-move-open");
+    liftRightmove.classList.remove("right-move-open");
+  }, 2500 * 2);
+  setTimeout(() => {
+    liftLeftmove.classList.remove("left-move-close");
+    liftRightmove.classList.remove("right-move-close");
+  }, 2500 * 4);
 }
