@@ -1,6 +1,7 @@
 let totalfloors;
 let totallifts;
 let liftArray = [];
+let map = new Map();
 document.addEventListener("DOMContentLoaded", () => {
   // console.log("first");
   const confirmbtn = document.querySelector(".confirm-btn");
@@ -84,13 +85,15 @@ function liftMaking() {
     <div class="right-door "></div>
     `;
     liftSection.id = `lift-${i}`;
-    liftArray.push(liftSection);
+    liftArray.push(`lift-${i}`);
+    map.set(`lift-${i}`, true);
 
     liftSection.innerHTML = lifts;
     const groundFloor = document.querySelector(".floor-no-0");
     groundFloor.append(liftSection);
   }
   console.log(liftArray);
+  console.log(map);
 }
 
 function liftMovement() {
@@ -106,23 +109,29 @@ function liftMovement() {
 
   const liftBtn = document.querySelectorAll(".call-btn");
   liftBtn.forEach((button) => {
-    button.addEventListener("click", (e) => {
+    button.addEventListener("click", async (e) => {
       const floorId = parseInt(e.target.id);
       console.log(floorId);
       console.log("lift btn pressed");
 
-      const liftMove = document.querySelector(".lift");
+      const liftId = getFreeLift();
+      console.log(liftId);
+      map.set(liftId, false);
+
+      const liftMove = document.querySelector(`#${liftId}`);
+
       liftMove.style.transform = `translateY(-${floorHeight * floorId}px)`;
       liftMove.style.transition = `all  ${floorId + 1 * 2}s ease-in-out`;
-      liftMove.addEventListener("transitionend", () => doorMovement(floorId), {
+      liftMove.addEventListener("transitionend", () => doorMovement(liftId), {
         once: true,
       });
-      liftMove.classList.add("busy");
+      // liftMove.classList.add("busy");
     });
   });
 }
 
-function doorMovement(floorId) {
+function doorMovement(liftId) {
+  const liftMove = document.querySelector(`#${liftId}`);
   let liftLeftmove = document.querySelector(".left-door");
   let liftRightmove = document.querySelector(".right-door");
 
@@ -137,5 +146,22 @@ function doorMovement(floorId) {
   setTimeout(() => {
     liftLeftmove.classList.remove("left-move-close");
     liftRightmove.classList.remove("right-move-close");
+    // liftMove.classList.remove("busy");
+    map.set(liftId, true);
   }, 2500 * 4);
+}
+function getFreeLift() {
+  let notFound = true;
+  while (notFound) {
+    for (const element of liftArray) {
+      if (map.get(element)) {
+        console.log(element);
+        notFound = false;
+        return element;
+      }
+    }
+  }
+
+  // map vlaues of true and false
+  // timing of lifts
 }
