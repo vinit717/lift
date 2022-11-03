@@ -97,6 +97,20 @@ function liftMaking() {
 }
 
 function liftMovement() {
+  const liftBtn = document.querySelectorAll(".call-btn");
+  liftBtn.forEach((button) => {
+    button.addEventListener("click", async (e) => {
+      const floorId = parseInt(e.target.id);
+      console.log(floorId);
+      console.log("lift btn pressed");
+
+      getFreeLift(floorId);
+      // console.log(liftId);
+      // map.set(liftId, false);
+    });
+  });
+}
+function movingLift(liftId, floorId) {
   const mainArea = document.querySelector(".floors-container");
   let height = mainArea.offsetHeight;
   console.log(height);
@@ -107,26 +121,12 @@ function liftMovement() {
     getComputedStyle(randomFloor).marginTop.slice(0, -2)
   );
 
-  const liftBtn = document.querySelectorAll(".call-btn");
-  liftBtn.forEach((button) => {
-    button.addEventListener("click", async (e) => {
-      const floorId = parseInt(e.target.id);
-      console.log(floorId);
-      console.log("lift btn pressed");
+  const liftMove = document.querySelector(`#${liftId}`);
 
-      const liftId = getFreeLift();
-      console.log(liftId);
-      map.set(liftId, false);
-
-      const liftMove = document.querySelector(`#${liftId}`);
-
-      liftMove.style.transform = `translateY(-${floorHeight * floorId}px)`;
-      liftMove.style.transition = `all  ${floorId + 1 * 2}s ease-in-out`;
-      liftMove.addEventListener("transitionend", () => doorMovement(liftId), {
-        once: true,
-      });
-      // liftMove.classList.add("busy");
-    });
+  liftMove.style.transform = `translateY(-${floorHeight * floorId}px)`;
+  liftMove.style.transition = `all  ${floorId + 1 * 2}s ease-in-out`;
+  liftMove.addEventListener("transitionend", () => doorMovement(liftId), {
+    once: true,
   });
 }
 
@@ -150,14 +150,16 @@ function doorMovement(liftId) {
     map.set(liftId, true);
   }, 2500 * 4);
 }
-function getFreeLift() {
+function getFreeLift(floorId) {
   let notFound = true;
   while (notFound) {
-    for (const element of liftArray) {
-      if (map.get(element)) {
-        console.log(element);
+    for (const liftId of liftArray) {
+      if (map.get(liftId)) {
+        console.log(liftId);
         notFound = false;
-        return element;
+        map.set(liftId, false);
+        movingLift(liftId, floorId);
+        return;
       }
     }
   }
