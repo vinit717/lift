@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<link href="https://fonts.cdnfonts.com/css/seven-segment" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 
 <body>
@@ -17,14 +18,20 @@
     </header>
     <div class="form-section container">
         <section class="input-values">
-            <input type="number" id="floor-input" placeholder="Enter the no. of floors">
+            <input type="number" id="floor-input" placeholder="Enter floors">
             <br>
-            <input type="number" id="lift-input" placeholder="Enter the no. of lifts">
+            <input type="number" id="lift-input" placeholder="Enter lifts">
             <br>
-            <button class="confirm-btn">Genrate</button>
+            <button class="confirm-btn " disabled="disabled">Genrate</button>
         </section>
     </div>
-    <main class="floors-container">
+    <main class="floors-container bg-video">
+        <!-- <video class="bg-video__content" autoplay muted loop>
+            <source src="src/Elevators - 2334.mp4" type="video/mp4">
+
+            Your browser is not supported!
+        </video> -->
+
         <!-- <section class="floor">
 
             <div class="floor-no">
@@ -38,6 +45,7 @@
            
 
         </section> -->
+
     </main>
     <script src="main.js"></script>
 </body>
