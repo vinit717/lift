@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let totalliftvalue = Number(liftValue.value);
         var x = window.matchMedia("(max-width: 750px)");
         if (x.matches) {
-          console.log("width <750");
+          // console.log("width <750");
           if (totalFloorvalue < 50 && totalliftvalue < 5) {
             document.querySelector(".confirm-btn").removeAttribute("disabled");
           }
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("negative number is not allowed");
           }
         } else {
-          console.log("width>750");
+          // console.log("width>750");
           if (totalFloorvalue < 50 && totalliftvalue < 11) {
             document.querySelector(".confirm-btn").removeAttribute("disabled");
           }
@@ -54,7 +54,7 @@ function generateBtn() {
   const floorValue = document.querySelector("#floor-input");
   const liftValue = document.querySelector("#lift-input");
   const inputBox = document.querySelector("input");
-  console.log(inputBox);
+  // console.log(inputBox);
   inputBox.addEventListener("keyup", () => {});
   if (floorValue.value && liftValue.value) {
     totalfloors = Number(floorValue.value);
@@ -67,8 +67,8 @@ function generateBtn() {
   // if (totalfloors < 0 && totallifts < 0) {
   //   alert("negative number is not allowed");
   // }
-  console.log(typeof totalfloors, totalfloors);
-  console.log(typeof totallifts, totallifts);
+  // console.log(typeof totalfloors, totalfloors);
+  // console.log(typeof totallifts, totallifts);
 
   // else {
   //   alert("please enter floors & lifts");
@@ -85,11 +85,11 @@ function generateBtn() {
 
 function floorMaking() {
   const floorContainer = document.querySelector(".floors-container");
-  console.log(totalfloors);
+  // console.log(totalfloors);
   for (let i = 0; i < totalfloors; i++) {
     var rowfloor = document.createElement("section");
     rowfloor.setAttribute("class", "floor");
-    console.log(rowfloor);
+    // console.log(rowfloor);
     floorContainer.append(rowfloor);
     const floors = ` <div class="floor-no-${i} floor-common">
     <div class="btn-floor ">
@@ -176,7 +176,7 @@ function doorMovement(liftId) {
     liftRightmove.classList.add("right-move-close");
     liftLeftmove.classList.remove("left-move-open");
     liftRightmove.classList.remove("right-move-open");
-  }, 2500 * 2);
+  }, 2500 + 1000);
   setTimeout(() => {
     liftLeftmove.classList.remove("left-move-close");
     liftRightmove.classList.remove("right-move-close");
