@@ -2,6 +2,8 @@ let totalfloors;
 let totallifts;
 let liftArray = [];
 let map = new Map();
+let floorMap = new Map();
+let obj = {};
 document.addEventListener("DOMContentLoaded", () => {
   const floorValue = document.querySelector("#floor-input");
   const liftValue = document.querySelector("#lift-input");
@@ -20,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let totalliftvalue = Number(liftValue.value);
         var x = window.matchMedia("(max-width: 750px)");
         if (x.matches) {
-          console.log("width <750");
+          // console.log("width <750");
           if (totalFloorvalue < 50 && totalliftvalue < 5) {
             document.querySelector(".confirm-btn").removeAttribute("disabled");
           }
@@ -28,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("negative number is not allowed");
           }
         } else {
-          console.log("width>750");
+          // console.log("width>750");
           if (totalFloorvalue < 50 && totalliftvalue < 11) {
             document.querySelector(".confirm-btn").removeAttribute("disabled");
           }
@@ -54,7 +56,7 @@ function generateBtn() {
   const floorValue = document.querySelector("#floor-input");
   const liftValue = document.querySelector("#lift-input");
   const inputBox = document.querySelector("input");
-  console.log(inputBox);
+  // console.log(inputBox);
   inputBox.addEventListener("keyup", () => {});
   if (floorValue.value && liftValue.value) {
     totalfloors = Number(floorValue.value);
@@ -67,8 +69,8 @@ function generateBtn() {
   // if (totalfloors < 0 && totallifts < 0) {
   //   alert("negative number is not allowed");
   // }
-  console.log(typeof totalfloors, totalfloors);
-  console.log(typeof totallifts, totallifts);
+  // console.log(typeof totalfloors, totalfloors);
+  // console.log(typeof totallifts, totallifts);
 
   // else {
   //   alert("please enter floors & lifts");
@@ -85,11 +87,11 @@ function generateBtn() {
 
 function floorMaking() {
   const floorContainer = document.querySelector(".floors-container");
-  console.log(totalfloors);
+  // console.log(totalfloors);
   for (let i = 0; i < totalfloors; i++) {
     var rowfloor = document.createElement("section");
     rowfloor.setAttribute("class", "floor");
-    console.log(rowfloor);
+    // console.log(rowfloor);
     floorContainer.append(rowfloor);
     const floors = ` <div class="floor-no-${i} floor-common">
     <div class="btn-floor ">
@@ -98,9 +100,11 @@ function floorMaking() {
     </div>
 </div>
     `;
+    floorMap.set(`floor-${i}`);
     rowfloor.innerHTML = floors;
     floorContainer.append(rowfloor);
   }
+  console.log(floorMap);
 }
 
 function liftMaking() {
@@ -113,6 +117,7 @@ function liftMaking() {
     <div class="right-door "></div>
     `;
     liftSection.id = `lift-${i}`;
+
     liftArray.push(`lift-${i}`);
     map.set(`lift-${i}`, true);
 
@@ -130,13 +135,17 @@ function liftMovement() {
     button.addEventListener("click", async (e) => {
       const floorId = parseInt(e.target.id);
       console.log(floorId);
-      console.log("lift btn pressed");
+      // console.log("lift btn pressed");
       e.target.setAttribute("disabled", "disabled");
       setTimeout(() => {
         e.target.removeAttribute("disabled");
-      }, 2500 * 5);
+      }, 2500 + 1000 * 5);
+      if (floorMap.get(`floor-${floorId}`)) {
+        doorMovement(floorMap.get(`floor-${floorId}`));
+      } else {
+        getFreeLift(floorId);
+      }
 
-      getFreeLift(floorId);
       once: true;
       // console.log(liftId);
       // map.set(liftId, false);
@@ -147,7 +156,7 @@ function liftMovement() {
 function movingLift(liftId, floorId) {
   const mainArea = document.querySelector(".floors-container");
   let height = mainArea.offsetHeight;
-  console.log(height);
+  // console.log(height);
 
   const floorHeight = height / totalfloors;
   const randomFloor = document.querySelector(".floor");
@@ -176,7 +185,7 @@ function doorMovement(liftId) {
     liftRightmove.classList.add("right-move-close");
     liftLeftmove.classList.remove("left-move-open");
     liftRightmove.classList.remove("right-move-open");
-  }, 2500 * 2);
+  }, 2500 + 1000);
   setTimeout(() => {
     liftLeftmove.classList.remove("left-move-close");
     liftRightmove.classList.remove("right-move-close");
@@ -191,6 +200,12 @@ function getFreeLift(floorId) {
       console.log(liftId);
       notFound = false;
       map.set(liftId, false);
+      for (const [key, value] of floorMap.entries()) {
+        if (value === liftId) {
+          floorMap.set(key, undefined);
+        }
+      }
+      floorMap.set(`floor-${floorId}`, liftId);
       movingLift(liftId, floorId);
       return;
     }
