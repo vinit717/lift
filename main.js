@@ -2,6 +2,8 @@ let totalfloors;
 let totallifts;
 let liftArray = [];
 let map = new Map();
+let floorMap = new Map();
+let obj = {};
 document.addEventListener("DOMContentLoaded", () => {
   const floorValue = document.querySelector("#floor-input");
   const liftValue = document.querySelector("#lift-input");
@@ -98,9 +100,11 @@ function floorMaking() {
     </div>
 </div>
     `;
+    floorMap.set(`floor-${i}`);
     rowfloor.innerHTML = floors;
     floorContainer.append(rowfloor);
   }
+  console.log(floorMap);
 }
 
 function liftMaking() {
@@ -113,6 +117,7 @@ function liftMaking() {
     <div class="right-door "></div>
     `;
     liftSection.id = `lift-${i}`;
+
     liftArray.push(`lift-${i}`);
     map.set(`lift-${i}`, true);
 
@@ -130,13 +135,17 @@ function liftMovement() {
     button.addEventListener("click", async (e) => {
       const floorId = parseInt(e.target.id);
       console.log(floorId);
-      console.log("lift btn pressed");
+      // console.log("lift btn pressed");
       e.target.setAttribute("disabled", "disabled");
       setTimeout(() => {
         e.target.removeAttribute("disabled");
-      }, 2500 * 5);
+      }, 2500 + 1000 * 5);
+      if (floorMap.get(`floor-${floorId}`)) {
+        doorMovement(floorMap.get(`floor-${floorId}`));
+      } else {
+        getFreeLift(floorId);
+      }
 
-      getFreeLift(floorId);
       once: true;
       // console.log(liftId);
       // map.set(liftId, false);
@@ -147,7 +156,7 @@ function liftMovement() {
 function movingLift(liftId, floorId) {
   const mainArea = document.querySelector(".floors-container");
   let height = mainArea.offsetHeight;
-  console.log(height);
+  // console.log(height);
 
   const floorHeight = height / totalfloors;
   const randomFloor = document.querySelector(".floor");
@@ -191,6 +200,12 @@ function getFreeLift(floorId) {
       console.log(liftId);
       notFound = false;
       map.set(liftId, false);
+      for (const [key, value] of floorMap.entries()) {
+        if (value === liftId) {
+          floorMap.set(key, undefined);
+        }
+      }
+      floorMap.set(`floor-${floorId}`, liftId);
       movingLift(liftId, floorId);
       return;
     }
