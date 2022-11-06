@@ -65,8 +65,8 @@ header {
 }
 #floor-input,
 #lift-input {
-  height: 5rem;
-  width: 21rem;
+  height: 4rem;
+  width: 18rem;
   margin-bottom: 1rem;
   border-radius: 1rem;
   color: var(--color-grey);
@@ -74,6 +74,11 @@ header {
   background-color: var(--color-dark-green-1);
   text-align: center;
   font-size: 1.6rem;
+}
+#floor-input:focus,
+#lift-input:focus {
+  height: 5rem;
+  width: 20rem;
 }
 
 .confirm-btn {
@@ -169,22 +174,22 @@ header {
 .left-move-open {
   transform: translate(-100%);
   transition-duration: 2.5s;
-  transition-timing-function: ease-in;
+  /* transition-timing-function: ease-in; */
 }
 .right-move-open {
   transform: translate(100%);
   transition-duration: 2.5s;
-  transition-timing-function: ease-in;
+  /* transition-timing-function: ease-in; */
 }
 .left-move-close {
   transform: translate(0%);
   transition-duration: 2.5s;
-  transition-timing-function: ease-in;
+  /* transition-timing-function: ease-in; */
 }
 .right-move-close {
   transform: translate(0%);
   transition-duration: 2.5s;
-  transition-timing-function: ease-in;
+  /* transition-timing-function: ease-in; */
 }
 
 @media screen and (max-width: 800px) {
