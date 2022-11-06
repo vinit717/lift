@@ -1,6 +1,7 @@
 let totalfloors;
 let totallifts;
 let liftArray = [];
+let floorArray = [];
 let map = new Map();
 let floorMap = new Map();
 let obj = {};
@@ -135,6 +136,7 @@ function liftMovement() {
     button.addEventListener("click", async (e) => {
       const floorId = parseInt(e.target.id);
       console.log(floorId);
+
       // console.log("lift btn pressed");
       e.target.setAttribute("disabled", "disabled");
       setTimeout(() => {
@@ -167,7 +169,7 @@ function movingLift(liftId, floorId) {
   const liftMove = document.querySelector(`#${liftId}`);
 
   liftMove.style.transform = `translateY(-${floorHeight * floorId}px)`;
-  liftMove.style.transition = `all  ${floorId + 1 * 4}s ease-in-out`;
+  liftMove.style.transition = `all  ${floorId + 1 * 4}s `;
   liftMove.addEventListener("transitionend", () => doorMovement(liftId), {
     once: true,
   });
@@ -190,6 +192,16 @@ function doorMovement(liftId) {
     liftLeftmove.classList.remove("left-move-close");
     liftRightmove.classList.remove("right-move-close");
     map.set(liftId, true);
+    if (floorArray.length > 0) {
+      for (const [key, value] of floorMap.entries()) {
+        if (value === liftId) {
+          floorMap.set(key, undefined);
+        }
+      }
+      floorMap.set(`floor-${floorArray[0]}`, liftId);
+      movingLift(liftId, floorArray[0]);
+      floorArray.shift();
+    }
   }, 2500 * 4);
 }
 
@@ -210,6 +222,8 @@ function getFreeLift(floorId) {
       return;
     }
   }
+  floorArray.push(floorId);
+  console.log(floorArray);
 }
 // map vlaues of true and false
 // timing of lifts
